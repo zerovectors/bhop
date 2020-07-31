@@ -1,5 +1,4 @@
-local mv = loadstring(game:HttpGet('https://pastebin.com/raw/qzn7WW3V',true))()
-
+local mv = require(script.movement)
 local player = game.Players.LocalPlayer
 local camera = game.Workspace.CurrentCamera
 local UserInputService = game:GetService("UserInputService")
@@ -32,7 +31,6 @@ function main()
 	--init movement
 	mv.init(player, camera, inputKeys);
 	mv.initBodyMovers();
-	
 	
 	--connect input
 	UserInputService.InputBegan:connect(onInput);

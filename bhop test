@@ -1,4 +1,4 @@
-local mv = require(script.movement)
+local mv = loadstring(game:HttpGet('https://pastebin.com/raw/qzn7WW3V',true))()
 local player = game.Players.LocalPlayer
 local camera = game.Workspace.CurrentCamera
 local UserInputService = game:GetService("UserInputService")

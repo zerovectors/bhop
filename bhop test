@@ -94,3 +94,4 @@ function onDeath()
 end
 
 main()
+print("executed woo no errors! now try bhopping")

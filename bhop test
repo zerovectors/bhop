@@ -1,0 +1,98 @@
+local mv = loadstring(game:HttpGet('https://pastebin.com/raw/qzn7WW3V',true))()
+
+local player = game.Players.LocalPlayer
+local camera = game.Workspace.CurrentCamera
+local UserInputService = game:GetService("UserInputService")
+camera.FieldOfView=120
+
+local prevUpdateTime = nil
+local updateDT = 1/60
+local inputKeys = {
+	["W"] = false,
+	["S"] = false,
+	["A"] = false,
+	["D"] = false,
+	["Space"] = false,
+	["LMB"] = false,
+	["RMB"] = false
+}
+
+function main()
+	
+	player.Character:WaitForChild("Humanoid");
+	--remove hats for physics sake
+	huckFats();
+	spawn(function()
+		while player.Character do
+			wait(1)
+			huckFats();
+		end
+	end)
+	
+	--init movement
+	mv.init(player, camera, inputKeys);
+	mv.initBodyMovers();
+	
+	
+	--connect input
+	UserInputService.InputBegan:connect(onInput);
+	UserInputService.InputEnded:connect(onInput);
+	
+	--connect updateloop
+	game:GetService("RunService"):BindToRenderStep("updateLoop", 1, updateLoop);
+	
+	--rip
+	player.Character.Humanoid.Died:connect(onDeath)
+end
+
+function updateLoop()
+	setDeltaTime();
+	mv.update(updateDT);
+end
+
+function huckFats()
+	for _,v in pairs (player.Character:GetChildren()) do
+		if v:IsA("Hat") then
+			v:Destroy()
+		end
+	end
+end
+
+function setDeltaTime() --seconds
+	local UpdateTime = tick() 
+	if prevUpdateTime ~= nil then
+		updateDT = (UpdateTime - prevUpdateTime)
+	else
+		updateDT = 1/60
+	end
+	prevUpdateTime = UpdateTime
+end
+
+function onInput(input, gameProcessedEvent)
+	local inputState
+	--print(input.KeyCode)
+	if input.UserInputState == Enum.UserInputState.Begin then
+		inputState = true
+	elseif input.UserInputState == Enum.UserInputState.End then
+		inputState = false
+	else
+		return
+	end 
+	
+	if input.UserInputType == Enum.UserInputType.Keyboard then
+		local key = input.KeyCode.Name
+		if inputKeys[key] ~= nil then
+			inputKeys[key] = inputState
+		end
+	elseif input.UserInputType == Enum.UserInputType.MouseButton1 then --LMB down
+		inputKeys.LMB = inputState
+	elseif input.UserInputType == Enum.UserInputType.MouseButton2 then --RMB down
+		inputKeys.RMB = inputState
+	end
+end
+
+function onDeath()
+	player.customCharacterSpawned = false
+end
+
+main()

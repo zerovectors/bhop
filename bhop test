@@ -9,7 +9,6 @@ camera.FieldOfView=120
 
 local prevUpdateTime = nil
 local updateDT = 1/60
-local serverEvent = game.Workspace:WaitForChild("RemoteEvent")
 local inputKeys = {
 	["W"] = false,
 	["S"] = false,
@@ -21,18 +20,6 @@ local inputKeys = {
 }
 
 function main()
-	-- character spawning bs
-	if player:FindFirstChild("customCharacterSpawned") == nil then
-		local newval = Instance.new("BoolValue", player);
-		newval.Name = "customCharacterSpawned";
-		newval.Value = false;
-	end
-	
-	if not player.customCharacterSpawned.Value then
-		player.customCharacterSpawned.Value = true;
-		serverEvent:FireServer("spawnCustom", nil);
-		return;
-	end
 	
 	player.Character:WaitForChild("Humanoid");
 	--remove hats for physics sake

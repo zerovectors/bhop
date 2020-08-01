@@ -1,0 +1,25 @@
+local speedDisplay = {}
+
+local display
+
+function speedDisplay.init(player, position)
+	display = Instance.new("TextLabel", player.PlayerGui:WaitForChild("ScreenGui2"))
+	display.Name = "SpeedDisplay"
+	display.Size = UDim2.new(0,100,0,30)
+	display.Position = position
+	display.BackgroundTransparency = 1
+	display.FontSize = "Size18"
+	display.Font="SciFi"
+	display.TextStrokeTransparency = 1
+	display.TextStrokeColor3 = Color3.new(0,0,0)
+	display.TextColor3 = Color3.new(0,0,0)
+	display.TextWrapped = false
+end
+
+function speedDisplay.update(vector3)
+	vector3 = vector3 - Vector3.new(0,vector3.y,0)
+	local speed = vector3.magnitude
+	display.Text = string.format("u/s: %.2f", speed)
+end
+
+return speedDisplay

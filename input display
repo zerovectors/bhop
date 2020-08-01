@@ -1,0 +1,68 @@
+local inputDisplay = {}
+
+local frame
+local ui
+local topLabel
+local bottomLabel
+
+
+function inputDisplay.init(player,position)
+	ui = Instance.new("ScreenGui", game.Players.PlayerGui)
+	frame = Instance.new("Frame", ui)
+	frame.Name = "inputDisplay"
+	frame.BackgroundTransparency = 1
+	frame.Position = position
+	frame.Size = UDim2.new(0,100,0,100)
+	
+	topLabel = Instance.new("TextLabel", frame)
+	topLabel.Name = "topLabel"
+	topLabel.Font="SciFi"
+	topLabel.Size = UDim2.new(1,0,0.5,0)
+	topLabel.BackgroundTransparency = 1
+	topLabel.FontSize = "Size24"
+	topLabel.TextStrokeTransparency = 1
+	topLabel.TextStrokeColor3 = Color3.new(0,0,0)
+	topLabel.TextColor3 = Color3.new(0,0,0)
+	topLabel.TextWrapped = false
+	topLabel.TextYAlignment = "Bottom"
+	
+	bottomLabel = Instance.new("TextLabel", frame)
+	bottomLabel.Name = "bottomLabel"
+	bottomLabel.Font="SciFi"
+	bottomLabel.Position = UDim2.new(0,0,0.5,0)
+	bottomLabel.Size = UDim2.new(1,0,0.5,0)
+	bottomLabel.BackgroundTransparency = 1
+	bottomLabel.FontSize = "Size24"
+	bottomLabel.TextStrokeTransparency = 1
+	bottomLabel.TextStrokeColor3 = Color3.new(0,0,0)
+	bottomLabel.TextColor3 = Color3.new(0,0,0)
+	bottomLabel.TextWrapped = false
+	bottomLabel.TextYAlignment = "Top"
+	
+end
+
+function inputDisplay.update(inputs)
+	local bottomText = "-"
+	if (inputs["A"] == true) then
+		bottomText = "A" 
+	end
+	
+	if (inputs["S"] == true) then
+		bottomText = bottomText .. " S"
+	else
+		bottomText = bottomText .. " -"
+	end
+	
+	if (inputs["D"] == true) then
+		bottomText = bottomText .. " D"
+	else
+		bottomText = bottomText .. " -"
+	end
+	
+	topLabel.Text = inputs["W"] == true and "W" or "-"
+	bottomLabel.Text = bottomText
+end
+
+
+
+return inputDisplay

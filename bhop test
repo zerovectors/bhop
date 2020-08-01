@@ -1,4 +1,7 @@
-local mv = loadstring(game:HttpGet('https://pastebin.com/raw/qzn7WW3V',true))()
+local mv = loadstring(game:HttpGet('https://raw.githubusercontent.com/zerovectors/bhop/master/movement',true))()
+local inputDisplay = loadstring(game:HttpGet('https://raw.githubusercontent.com/zerovectors/bhop/master/input%20display',true))()
+local speedDisplay = loadstring(game:HttpGet('https://raw.githubusercontent.com/zerovectors/bhop/master/speed%20display',true))()
+
 local player = game.Players.LocalPlayer
 local camera = game.Workspace.CurrentCamera
 local UserInputService = game:GetService("UserInputService")
@@ -6,6 +9,7 @@ camera.FieldOfView=120
 
 local prevUpdateTime = nil
 local updateDT = 1/60
+local serverEvent = game.Workspace:WaitForChild("RemoteEvent")
 local inputKeys = {
 	["W"] = false,
 	["S"] = false,
@@ -17,6 +21,18 @@ local inputKeys = {
 }
 
 function main()
+	-- character spawning bs
+	if player:FindFirstChild("customCharacterSpawned") == nil then
+		local newval = Instance.new("BoolValue", player);
+		newval.Name = "customCharacterSpawned";
+		newval.Value = false;
+	end
+	
+	if not player.customCharacterSpawned.Value then
+		player.customCharacterSpawned.Value = true;
+		serverEvent:FireServer("spawnCustom", nil);
+		return;
+	end
 	
 	player.Character:WaitForChild("Humanoid");
 	--remove hats for physics sake
@@ -32,6 +48,10 @@ function main()
 	mv.init(player, camera, inputKeys);
 	mv.initBodyMovers();
 	
+	--display poop
+	inputDisplay.init(player, UDim2.new(0.9,-100,0.5,-50));
+	speedDisplay.init(player, UDim2.new(0.9, -100, 0.5, 50));
+	
 	--connect input
 	UserInputService.InputBegan:connect(onInput);
 	UserInputService.InputEnded:connect(onInput);
@@ -46,6 +66,8 @@ end
 function updateLoop()
 	setDeltaTime();
 	mv.update(updateDT);
+	inputDisplay.update(inputKeys);
+	speedDisplay.update(player.Character.Torso.Velocity);
 end
 
 function huckFats()
@@ -94,4 +116,3 @@ function onDeath()
 end
 
 main()
-print("executed woo no errors! now try bhopping")

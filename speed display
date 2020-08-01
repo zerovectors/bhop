@@ -1,9 +1,11 @@
 local speedDisplay = {}
 
 local display
+local ui
 
 function speedDisplay.init(player, position)
-	display = Instance.new("TextLabel", player.PlayerGui:WaitForChild("ScreenGui2"))
+	ui = Instance.new("ScreenGui", player.PlayerGui)
+	display = Instance.new("TextLabel", ui)
 	display.Name = "SpeedDisplay"
 	display.Size = UDim2.new(0,100,0,30)
 	display.Position = position

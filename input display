@@ -8,6 +8,7 @@ local bottomLabel
 
 function inputDisplay.init(player,position)
 	ui = Instance.new("ScreenGui", game.Players.PlayerGui)
+	ui.Name = "ScreenGui2"
 	frame = Instance.new("Frame", ui)
 	frame.Name = "inputDisplay"
 	frame.BackgroundTransparency = 1

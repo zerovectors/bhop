@@ -1,5 +1,4 @@
 local mv = loadstring(game:HttpGet('https://raw.githubusercontent.com/zerovectors/bhop/master/movement',true))()
-local speedDisplay = loadstring(game:HttpGet('https://raw.githubusercontent.com/zerovectors/bhop/master/speed%20display',true))()
 
 local player = game.Players.LocalPlayer
 local camera = game.Workspace.CurrentCamera
@@ -35,7 +34,7 @@ function main()
 	mv.initBodyMovers();
 	
 	--display poop
-	speedDisplay.init(player, UDim2.new(0.9, -100, 0.5, 50));
+	--speedDisplay.init(player, UDim2.new(0.9, -100, 0.5, 50));
 	
 	--connect input
 	UserInputService.InputBegan:connect(onInput);

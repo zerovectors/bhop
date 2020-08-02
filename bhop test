@@ -47,12 +47,12 @@ function main()
 	player.Character.Humanoid.Died:connect(onDeath)
 end
 
-function updateLoop()
+--[[function updateLoop()
 	setDeltaTime();
 	mv.update(updateDT);
 	--inputDisplay.update(inputKeys);
 	--speedDisplay.update(player.Character.Torso.Velocity);
-end
+end]]
 
 function huckFats()
 	for _,v in pairs (player.Character:GetChildren()) do

@@ -129,7 +129,8 @@ function updateMoveInputSum()
 end
 
 function findCollisionRay()
-	local torsoCFrame = character.Torso.CFrame
+if character:FindFirstChild("HumanoidRootPart") then
+	local torsoCFrame = character:FindFirstChild("HumanoidRootPart").CFrame
 	local ignoreList = {character, camera}
 	local rays = {
 		Ray.new(character.Torso.Position, Vector3.new(0, -rayYLength, 0)),
@@ -173,6 +174,8 @@ function findCollisionRay()
 	end
 	
 	return rayReturns[i][1], rayReturns[i][2], rayReturns[i][3], yRatio, zRatio
+else return end
+end
 end
 
 function setCharacterRotation()

@@ -1,4 +1,4 @@
-local mv = loadstring(game:HttpGet('https://raw.githubusercontent.com/zerovectors/bhop/master/movement',true))()
+local mv = loadstring(game:HttpGet('https://pastebin.com/raw/qzn7WW3V',true))()
 
 local player = game.Players.LocalPlayer
 local camera = game.Workspace.CurrentCamera
@@ -18,7 +18,7 @@ local inputKeys = {
 }
 
 function main()
-	
+
 	player.Character:WaitForChild("Humanoid");
 	--remove hats for physics sake
 	huckFats();
@@ -28,31 +28,27 @@ function main()
 			huckFats();
 		end
 	end)
-	
+
 	--init movement
 	mv.init(player, camera, inputKeys);
 	mv.initBodyMovers();
-	
-	--display poop
-	--speedDisplay.init(player, UDim2.new(0.9, -100, 0.5, 50));
-	
+
+
 	--connect input
 	UserInputService.InputBegan:connect(onInput);
 	UserInputService.InputEnded:connect(onInput);
-	
+
 	--connect updateloop
 	game:GetService("RunService"):BindToRenderStep("updateLoop", 1, updateLoop);
-	
+
 	--rip
 	player.Character.Humanoid.Died:connect(onDeath)
 end
 
---[[function updateLoop()
+function updateLoop()
 	setDeltaTime();
 	mv.update(updateDT);
-	--inputDisplay.update(inputKeys);
-	--speedDisplay.update(player.Character.Torso.Velocity);
-end]]
+end
 
 function huckFats()
 	for _,v in pairs (player.Character:GetChildren()) do
@@ -82,7 +78,7 @@ function onInput(input, gameProcessedEvent)
 	else
 		return
 	end 
-	
+
 	if input.UserInputType == Enum.UserInputType.Keyboard then
 		local key = input.KeyCode.Name
 		if inputKeys[key] ~= nil then

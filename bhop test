@@ -50,8 +50,8 @@ end
 function updateLoop()
 	setDeltaTime();
 	mv.update(updateDT);
-	inputDisplay.update(inputKeys);
-	speedDisplay.update(player.Character.Torso.Velocity);
+	--inputDisplay.update(inputKeys);
+	--speedDisplay.update(player.Character.Torso.Velocity);
 end
 
 function huckFats()

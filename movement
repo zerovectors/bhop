@@ -50,7 +50,7 @@ function mv.init(Player, Camera, Input)
 	["forward"] = 0,
 	["side"] 	= 0 --left is positive
 	}
-	
+
 	airAccelerate 			= 10000
 	airMaxSpeed 			= 2.4
 	groundAccelerate 		= 250
@@ -67,7 +67,7 @@ function mv.init(Player, Camera, Input)
 	movementPositionP		= 14000
 	movementVelocityP		= 1500
 	gravity					= 0.4
-	
+
 end
 
 function mv.initBodyMovers()
@@ -77,13 +77,13 @@ function mv.initBodyMovers()
 	movementPosition.P = movementPositionP
 	movementPosition.maxForce = Vector3.new()
 	movementPosition.position = Vector3.new()
-	
+
 	movementVelocity = Instance.new("BodyVelocity", collider)
 	movementVelocity.Name = "movementVelocity"
 	movementVelocity.P = movementVelocityP
 	movementVelocity.maxForce = Vector3.new()
 	movementVelocity.velocity = Vector3.new()
-	
+
 	gravityForce = Instance.new("BodyForce", collider)
 	gravityForce.Name = "gravityForce"
 	gravityForce.force = Vector3.new(0, (1-gravity)*196.2, 0) * getCharacterMass()
@@ -100,7 +100,7 @@ function mv.update(deltaTime)
 	local hitPart, hitPosition, hitNormal, yRatio, zRatio = findCollisionRay()
 	partYRatio = yRatio
 	partZRatio = zRatio
-	
+
 	playerGrounded = hitPart ~= nil and true or false
 	playerVelocity = collider.Velocity - Vector3.new(0, collider.Velocity.y, 0)
 	if playerGrounded and (input["Space"] or jumping) then
@@ -108,7 +108,7 @@ function mv.update(deltaTime)
 	else
 		jumping = false
 	end
-	
+
 	setCharacterRotation()
 	if jumping then
 		jump()
@@ -118,7 +118,7 @@ function mv.update(deltaTime)
 	else
 		air()		
 	end
-	
+
 end
 
 function updateMoveInputSum()
@@ -129,8 +129,7 @@ function updateMoveInputSum()
 end
 
 function findCollisionRay()
-if character:FindFirstChild("HumanoidRootPart") then
-	local torsoCFrame = character:FindFirstChild("HumanoidRootPart").CFrame
+	local torsoCFrame = character.Torso.CFrame
 	local ignoreList = {character, camera}
 	local rays = {
 		Ray.new(character.Torso.Position, Vector3.new(0, -rayYLength, 0)),
@@ -140,7 +139,7 @@ if character:FindFirstChild("HumanoidRootPart") then
 		Ray.new((torsoCFrame * CFrame.new(0,0,-0.8)).p, Vector3.new(0, -rayYLength, 0))
 	}
 	local rayReturns  = {}
-	
+
 	local i
 	for i = 1, #rays do
 		local part, position, normal = game.Workspace:FindPartOnRayWithIgnoreList(rays[i],ignoreList)
@@ -163,7 +162,7 @@ if character:FindFirstChild("HumanoidRootPart") then
 			end
 		end
 	end
-	
+
 	i = 1
 	local yRatio, zRatio = getPartYRatio(rayReturns[i][3])
 	while magnitude2D(yRatio, zRatio) > maxMovementPitch and i<#rayReturns do
@@ -172,10 +171,8 @@ if character:FindFirstChild("HumanoidRootPart") then
 			yRatio, zRatio = getPartYRatio(rayReturns[i][3])
 		end
 	end
-	
+
 	return rayReturns[i][1], rayReturns[i][2], rayReturns[i][3], yRatio, zRatio
-else return end
-end
 end
 
 function setCharacterRotation()
@@ -198,12 +195,12 @@ end
 function run(hitPosition)
 	local playerSpeed = collider.Velocity.magnitude
 	local mVelocity = collider.Velocity
-	
+
 	if playerSpeed ~= 0 then
 		local drop = playerSpeed * friction * dt;
 		mVelocity = mVelocity * math.max(playerSpeed - drop, 0) / playerSpeed;
 	end
-	
+
 	movementPosition.position = hitPosition + Vector3.new(0,playerTorsoToGround,0)
 	movementPosition.maxForce = Vector3.new(0,movementPositionForce,0)
 	movementVelocity.velocity = getMovementVelocity(mVelocity, groundAccelerate, groundMaxVelocity)
@@ -219,14 +216,14 @@ function getMovementVelocity(prevVelocity, accelerate, maxVelocity)
 	if moveInputSum["forward"] == 0 and moveInputSum["side"] == 0 then --avoids divide 0 errors
 		accelDir = Vector3.new(0,0,0);
 	end
-	
+
 	local projVel =  prevVelocity:Dot(accelDir);
 	local accelVel = accelerate * dt;
-	
+
 	if (projVel + accelVel > maxVelocity) then
 		accelVel = math.max(maxVelocity - projVel, 0);
 	end
-	
+
 	return prevVelocity + accelDir * accelVel;
 end
 
@@ -242,10 +239,10 @@ function getMovementVelocityAirForce()
 	if moveInputSum["forward"] == 0 and moveInputSum["side"] == 0 then
 		accelDir = Vector3.new(0,0,0);
 	end
-	
+
 	local xp = math.abs(accelDir.x)
 	local zp = math.abs(accelDir.z)
-	
+
 	return Vector3.new(movementVelocityForce*xp,0,movementVelocityForce*zp)
 end
 
